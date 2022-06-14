@@ -28,7 +28,7 @@ void setup()
 void loop()
 {
  scale.set_scale(calibration_factor);//Adjust to this calibration factor
- Serial.print("Reading");
+ Serial.println("Reading....");
  units = scale.get_units(), 10;
 if(units<0)
  {
@@ -36,9 +36,11 @@ if(units<0)
  }
    if(units>=0)
    {
-    Serial.print(units);
+    Serial.println(units);
     Serial.print(" grams");
     Serial.println();
+    Serial.println("Calibration Factor:");
+    Serial.print(calibration_factor);
     delay(5000);
    }
    if(Serial.available())
