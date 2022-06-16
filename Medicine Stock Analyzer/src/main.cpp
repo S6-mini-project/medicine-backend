@@ -1,89 +1,5 @@
 #include <Arduino.h>
-// #include "HX711.h"
-
-// #define DOUT 14
-// #define CLK 12
-
-// HX711 scale;
-// float calibration_factor=888;
-// int units;
-// void setup()
-// {  
-//    //float calibration_factor = 888;
-//    Serial.begin(9600);
-//    Serial.println("HX711 calibration sketch");
-//    scale.begin(14,12);
-//    Serial.println("Remove all wieghts");
-//    Serial.println("After reading place known weights");
-//    Serial.println("Press a or + to increase calibration factor");
-//    Serial.println("Press z or - to decrease the calibration factor");
-
-//    scale.set_scale();
-//    scale.tare();//Reset scale value to 0
-
-//    long zero_factor=scale.read_average();//Get baseline reading
-//    Serial.println("Zero Factor:");
-//    Serial.print(zero_factor);
-// }
-// void loop()
-// {
-//  scale.set_scale(calibration_factor);//Adjust to this calibration factor
-//  Serial.println("Reading....");
-//  units = scale.get_units(), 10;
-// if(units<0)
-//  {
-//     units=0;
-//  }
-//    if(units>=0)
-//    {
-//     Serial.println(units);
-//     Serial.print(" grams");
-//     Serial.println();
-//     Serial.println("Calibration Factor:");
-//     Serial.print(calibration_factor);
-//     delay(5000);
-//    }
-//    if(Serial.available())
-//    {
-//     char temp= Serial.read();
-//     if(temp=='a'||temp=='+')
-//     {
-//       calibration_factor=calibration_factor+1;
-//     }
-//     else if(temp=='z'||temp=='-')
-//     {
-//       calibration_factor=calibration_factor-1;
-//     }
-//    }
-// }
-/**
- *
- * HX711 library for Arduino - example file
- * https://github.com/bogde/HX711
- *
- * MIT License
- * (c) 2018 Bogdan Necula
- *
-**/
-/*
-   -------------------------------------------------------------------------------------
-   HX711_ADC
-   Arduino library for HX711 24-Bit Analog-to-Digital Converter for Weight Scales
-   Olav Kallhovd sept2017
-   -------------------------------------------------------------------------------------
-*/
-
-/*
-   This example file shows how to calibrate the load cell and optionally store the calibration
-   value in EEPROM, and also how to change the value manually.
-   The result value can then later be included in your project sketch or fetched from EEPROM.
-
-   To implement calibration in your project sketch the simplified procedure is as follow:
-       LoadCell.tare();
-       //place known mass
-       LoadCell.refreshDataSet();
-       float newCalibrationValue = LoadCell.getNewCalibration(known_mass);
-*/
+// CALIBRATION PROGRAM
 
 // #include <HX711_ADC.h>
 // #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
@@ -288,30 +204,20 @@
 
 // }
 
-/*
-   -------------------------------------------------------------------------------------
-   HX711_ADC
-   Arduino library for HX711 24-Bit Analog-to-Digital Converter for Weight Scales
-   Olav Kallhovd sept2017
-   -------------------------------------------------------------------------------------
-*/
-
-/*
-   Settling time (number of samples) and data filtering can be adjusted in the config.h file
-   For calibration and storing the calibration value in eeprom, see example file "Calibration.ino"
-
-   The update() function checks for new data and starts the next conversion. In order to acheive maximum effective
-   sample rate, update() should be called at least as often as the HX711 sample rate; >10Hz@10SPS, >80Hz@80SPS.
-   If you have other time consuming code running (i.e. a graphical LCD), consider calling update() from an interrupt routine,
-   see example file "Read_1x_load_cell_interrupt_driven.ino".
-
-   This is an example sketch on how to use this library
-*/
+// WEIGHT MEASUREMENT PROGRAM
 
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
+#include<Adafruit_GFX.h>
+#include<Adafruit_SSD1306.h>
+#include<Wire.h>
+
 #endif
+#define OLED_RESET 16
+
+Adafruit_SSD1306 display(OLED_RESET);
+
 
 //pins:
 const int HX711_dout = 14; //mcu > HX711 dout pin
@@ -322,6 +228,7 @@ HX711_ADC LoadCell(HX711_dout, HX711_sck);
 
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
+
 
 void setup() {
   Serial.begin(9600); delay(10);
@@ -348,6 +255,12 @@ void setup() {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     Serial.println("Startup is complete");
   }
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  
+  display.setTextSize(1);
+	display.setTextColor(WHITE);
+	display.setCursor(0,28);
+	
+
 }
 
 void loop() {
@@ -378,5 +291,6 @@ void loop() {
   if (LoadCell.getTareStatus() == true) {
     Serial.println("Tare complete");
   }
-
+display.println("Hello world!");
+	display.display();
 }
