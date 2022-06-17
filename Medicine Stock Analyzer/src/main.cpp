@@ -209,14 +209,11 @@
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
 #include <EEPROM.h>
-#include<Adafruit_GFX.h>
-#include<Adafruit_SSD1306.h>
+#include "SSD1306Wire.h"
 #include<Wire.h>
 
 #endif
-#define OLED_RESET 16
-
-Adafruit_SSD1306 display(OLED_RESET);
+SSD1306Wire display(0x3c, 5,16);
 
 
 //pins:
@@ -234,6 +231,7 @@ void setup() {
   Serial.begin(9600); delay(10);
   Serial.println();
   Serial.println("Starting...");
+
 
   LoadCell.begin();
   //LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
@@ -255,15 +253,20 @@ void setup() {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     Serial.println("Startup is complete");
   }
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  
-  display.setTextSize(1);
-	display.setTextColor(WHITE);
-	display.setCursor(0,28);
+ Serial.println("Initialiazing OLED Display....");
+ display.init();
+
+ display.flipScreenVertically();
+ display.setFont(ArialMT_Plain_10);
 	
 
 }
 
 void loop() {
+  display.clear();
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.drawString(0,10,"Jeevan");
+  display.display();
   static boolean newDataReady = 0;
   const int serialPrintInterval = 0; //increase value to slow down serial print activity
 
@@ -291,6 +294,5 @@ void loop() {
   if (LoadCell.getTareStatus() == true) {
     Serial.println("Tare complete");
   }
-display.println("Hello world!");
-	display.display();
+
 }
