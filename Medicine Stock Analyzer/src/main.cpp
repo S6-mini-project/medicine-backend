@@ -268,7 +268,7 @@ void loop() {
   display.drawString(0,10,"Jeevan");
   display.display();
   static boolean newDataReady = 0;
-  const int serialPrintInterval = 0; //increase value to slow down serial print activity
+  const int serialPrintInterval = 50; //increase value to slow down serial print activity
 
   // check for new data/start next conversion:
   if (LoadCell.update()) newDataReady = true;
