@@ -234,11 +234,11 @@ void setup() {
 
 
   LoadCell.begin();
-  LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
+  //LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
   float calibrationValue; // calibration value (see example file "Calibration.ino")
   //calibrationValue = 696.0; // uncomment this if you want to set the calibration value in the sketch
 #if defined(ESP8266)|| defined(ESP32)
-  //EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
+  EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
 #endif
   EEPROM.get(calVal_eepromAdress, calibrationValue); // uncomment this if you want to fetch the calibration value from eeprom
 
@@ -278,9 +278,14 @@ void loop() {
     if (millis() > t + serialPrintInterval) {
       float i = LoadCell.getData();
       Serial.print("Load_cell output val: ");
+      if(i<0)
+      {
+        Serial.println(0);
+      }
+      else{
      
         Serial.println(i);
-      
+      }
       newDataReady = 0;
       t = millis();
     }
