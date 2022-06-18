@@ -204,7 +204,7 @@
 
 // }
 
-// WEIGHT MEASUREMENT PROGRAM
+//WEIGHT MEASUREMENT PROGRAM
 
 #include <HX711_ADC.h>
 #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
@@ -213,7 +213,7 @@
 #include<Wire.h>
 
 #endif
-SSD1306Wire display(0x3c, 5,16);
+SSD1306Wire display(0x3c,D0,D1);
 
 
 //pins:
@@ -234,9 +234,9 @@ void setup() {
 
 
   LoadCell.begin();
-  //LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
+  LoadCell.setReverseOutput(); //uncomment to turn a negative output value to positive
   float calibrationValue; // calibration value (see example file "Calibration.ino")
-  calibrationValue = 696.0; // uncomment this if you want to set the calibration value in the sketch
+  //calibrationValue = 696.0; // uncomment this if you want to set the calibration value in the sketch
 #if defined(ESP8266)|| defined(ESP32)
   //EEPROM.begin(512); // uncomment this if you use ESP8266/ESP32 and want to fetch the calibration value from eeprom
 #endif
@@ -263,7 +263,7 @@ void setup() {
 }
 
 void loop() {
-  display.clear();
+  //display.clear();
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.drawString(0,10,"Jeevan");
   display.display();
@@ -278,7 +278,9 @@ void loop() {
     if (millis() > t + serialPrintInterval) {
       float i = LoadCell.getData();
       Serial.print("Load_cell output val: ");
-      Serial.println(i);
+     
+        Serial.println(i);
+      
       newDataReady = 0;
       t = millis();
     }
