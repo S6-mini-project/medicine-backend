@@ -211,9 +211,16 @@
 #include <EEPROM.h>
 #include "SSD1306Wire.h"
 #include<Wire.h>
+#include<ESP8266WiFi.h>
+#include<WiFiClient.h>
+#include<ESP8266WebServer.h>
+#include<ESP8266mDNS.h>
+#include<SPI.h>
+//#include<MFRC522.h>
+
 
 #endif
-SSD1306Wire display(0x3c,D0,D1);
+SSD1306Wire display(0x3c,D0,D1);//Try GPIO pins of D0 and D1  Refer techtutorialsx.com
 
 
 //pins:
@@ -223,8 +230,42 @@ const int HX711_sck = 12; //mcu > HX711 sck pin
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
 
+float wieght;
+
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
+
+ const char* ssid = "Miwifi";// 
+const char* password = "jeevan@10";
+//WiFiClient client;
+char server[] = "192.168.31.216"; 
+
+
+WiFiClient client;  
+void Sending_to_phpadmindatabase()
+{
+  if (client.connect(server,80))
+  {
+    Serial.println("Connected");
+
+    //make a http request
+    Serial.print("GET /testcase/test.php?Weight=");
+    client.print("GET /testcase/test.php?Weight=");
+    Serial.print(wieght);
+    client.print(wieght);
+     client.print(" ");      //SPACE BEFORE HTTP/1.1
+    client.print("HTTP/1.1");
+    client.println();
+    client.println("Host: Your Local IP");
+    client.println("Connection: close");
+    client.println();
+  } else 
+  {
+    // if you didn't get a connection to the server:
+    Serial.println("connection failed");
+  }
+ }
+  
 
 
 void setup() {
@@ -258,7 +299,26 @@ void setup() {
 
  display.flipScreenVertically();
  display.setFont(ArialMT_Plain_10);
-	
+Serial.println();
+Serial.println();
+Serial.println("Connecting to");
+Serial.print(ssid);
+
+WiFi.begin(ssid,password);
+
+while(WiFi.status()!= WL_CONNECTED)
+{
+  delay(500);
+  Serial.print(".");
+}
+Serial.println("");
+Serial.println("Wifi is Connected!");
+
+//server.begin();
+Serial.println("Server Started");
+Serial.println(WiFi.localIP());
+delay(1000);
+Serial.println("Connecting..");
 
 }
 
@@ -276,15 +336,15 @@ void loop() {
   // get smoothed value from the dataset:
   if (newDataReady) {
     if (millis() > t + serialPrintInterval) {
-      float i = LoadCell.getData();
+       wieght = LoadCell.getData();
       Serial.print("Load_cell output val: ");
-      if(i<0)
+      if(wieght<0)
       {
         Serial.println(0);
       }
       else{
      
-        Serial.println(i);
+        Serial.println(wieght);
       }
       newDataReady = 0;
       t = millis();
@@ -301,5 +361,9 @@ void loop() {
   if (LoadCell.getTareStatus() == true) {
     Serial.println("Tare complete");
   }
-
+  Sending_to_phpadmindatabase();
+  delay(10000);
 }
+
+
+
