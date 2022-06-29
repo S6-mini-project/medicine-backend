@@ -1,5 +1,5 @@
 #include <Arduino.h>
-// CALIBRATION PROGRAM
+//CALIBRATION PROGRAM
 
 // #include <HX711_ADC.h>
 // #if defined(ESP8266)|| defined(ESP32) || defined(AVR)
@@ -230,7 +230,7 @@ const int HX711_sck = 12; //mcu > HX711 sck pin
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
 
-float wieght;
+float weight;
 
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
@@ -238,7 +238,7 @@ unsigned long t = 0;
  const char* ssid = "Miwifi";// 
 const char* password = "jeevan@10";
 //WiFiClient client;
-char server[] = "192.168.31.216"; 
+char server[] = "192.168.1.3 "; 
 
 
 WiFiClient client;  
@@ -249,10 +249,11 @@ void Sending_to_phpadmindatabase()
     Serial.println("Connected");
 
     //make a http request
-    Serial.print("GET /testcase/test.php?Weight=");
-    client.print("GET /testcase/test.php?Weight=");
-    Serial.print(wieght);
-    client.print(wieght);
+    Serial.print("GET /testcase/test.php?weight=");
+    client.print("GET http://your_hostname/testcase/test.php?");
+    Serial.print(weight);
+    client.print("$weight=");
+    client.print(weight);
      client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
@@ -314,7 +315,7 @@ while(WiFi.status()!= WL_CONNECTED)
 Serial.println("");
 Serial.println("Wifi is Connected!");
 
-//server.begin();
+//Server.begin();
 Serial.println("Server Started");
 Serial.println(WiFi.localIP());
 delay(1000);
@@ -336,15 +337,15 @@ void loop() {
   // get smoothed value from the dataset:
   if (newDataReady) {
     if (millis() > t + serialPrintInterval) {
-       wieght = LoadCell.getData();
+       weight = LoadCell.getData();
       Serial.print("Load_cell output val: ");
-      if(wieght<0)
+      if(weight<0)
       {
         Serial.println(0);
       }
       else{
      
-        Serial.println(wieght);
+        Serial.println(weight);
       }
       newDataReady = 0;
       t = millis();
@@ -362,7 +363,7 @@ void loop() {
     Serial.println("Tare complete");
   }
   Sending_to_phpadmindatabase();
-  delay(10000);
+  //delay(5000);
 }
 
 
