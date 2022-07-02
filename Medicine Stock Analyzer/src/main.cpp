@@ -238,7 +238,7 @@ unsigned long t = 0;
  const char* ssid = "Miwifi";// 
 const char* password = "jeevan@10";
 //WiFiClient client;
-char server[] = "192.168.1.3 "; 
+char server[] = "192.168.31.216"; 
 
 
 WiFiClient client;  
@@ -250,16 +250,21 @@ void Sending_to_phpadmindatabase()
 
     //make a http request
     Serial.print("GET /testcase/test.php?weight=");
-    client.print("GET http://your_hostname/testcase/test.php?");
+    client.print("GET http://localhost/testcase/test.php?");
     Serial.print(weight);
-    client.print("$weight=");
+    client.print("&weight=");
     client.print(weight);
      client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
-    client.println("Host: Your Local IP");
+    client.println("Host: 192.168.31.216");
     client.println("Connection: close");
     client.println();
+    //  client.print(String("GET http://your_hostname/testcase/testcase.php?") + 
+    //                       ("&weihumidity=") + humidity +
+    //                       " HTTP/1.1\r\n" +
+    //              "Host: " + host + "\r\n" +
+    //              "Connection: close\r\n\r\n");
   } else 
   {
     // if you didn't get a connection to the server:
@@ -341,7 +346,8 @@ void loop() {
       Serial.print("Load_cell output val: ");
       if(weight<0)
       {
-        Serial.println(0);
+        weight=0;
+        Serial.println(weight);
       }
       else{
      
@@ -363,8 +369,4 @@ void loop() {
     Serial.println("Tare complete");
   }
   Sending_to_phpadmindatabase();
-  //delay(5000);
 }
-
-
-
