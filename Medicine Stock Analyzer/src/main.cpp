@@ -235,10 +235,10 @@ float weight;
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
- const char* ssid = "Miwifi";// 
-const char* password = "jeevan@10";
+ const char* ssid = "FACULTY";// 
+const char* password = "fac*2019#tasif";
 //WiFiClient client;
-char server[] = "192.168.31.216"; 
+char server[] = "10.100.35.177"; 
 
 
 WiFiClient client;  
@@ -249,7 +249,7 @@ void Sending_to_phpadmindatabase()
     Serial.println("Connected");
 
     //make a http request
-    Serial.print("GET /testcase/test.php?weight=");
+    // Serial.print("GET /testcase/test.php?weight=");
     client.print("GET http://localhost/testcase/test.php?");
     Serial.print(weight);
     client.print("&weight=");
@@ -300,13 +300,14 @@ void setup() {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     Serial.println("Startup is complete");
   }
- Serial.println("Initialiazing OLED Display....");
- display.init();
+//  Serial.println("Initialiazing OLED Display....");
+//  display.init();
 
- display.flipScreenVertically();
- display.setFont(ArialMT_Plain_10);
+//  display.flipScreenVertically();
+//  display.setFont(ArialMT_Plain_10);
 Serial.println();
 Serial.println();
+
 Serial.println("Connecting to");
 Serial.print(ssid);
 
@@ -330,9 +331,9 @@ Serial.println("Connecting..");
 
 void loop() {
   //display.clear();
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.drawString(0,10,"Jeevan");
-  display.display();
+  // display.setTextAlignment(TEXT_ALIGN_LEFT);
+  // display.drawString(0,10,"Jeevan");
+  // display.display();
   static boolean newDataReady = 0;
   const int serialPrintInterval = 50; //increase value to slow down serial print activity
 
