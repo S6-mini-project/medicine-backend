@@ -235,10 +235,10 @@ float weight;
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
- const char* ssid = "FACULTY";// 
-const char* password = "fac*2019#tasif";
+ const char* ssid = "HUAWEI-kccl";// 
+const char* password = "9847452948";
 //WiFiClient client;
-char server[] = "10.100.35.177"; 
+char server[] = "192.168.18.222"; 
 
 
 WiFiClient client;  
@@ -250,14 +250,14 @@ void Sending_to_phpadmindatabase()
 
     //make a http request
     // Serial.print("GET /testcase/test.php?weight=");
-    client.print("GET http://localhost/testcase/test.php?");
-    Serial.print(weight);
-    client.print("&weight=");
+    client.print("GET http://localhost/medicine/test.php?weight=");
+    Serial.println(weight);
+    // client.print("weight=");
     client.print(weight);
      client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
-    client.println("Host: 192.168.31.216");
+    client.println("Host: 192.168.1.7");
     client.println("Connection: close");
     client.println();
     //  client.print(String("GET http://your_hostname/testcase/testcase.php?") + 
@@ -348,11 +348,11 @@ void loop() {
       if(weight<0)
       {
         weight=0;
-        Serial.println(weight);
+        // Serial.println(weight);
       }
       else{
      
-        Serial.println(weight);
+        weight=weight*100;
       }
       newDataReady = 0;
       t = millis();
