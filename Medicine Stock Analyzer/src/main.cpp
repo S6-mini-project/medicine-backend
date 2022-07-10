@@ -230,19 +230,22 @@ const int HX711_sck = 12; //mcu > HX711 sck pin
 //HX711 constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
 
-float weight;
+float w1;
+ String ws1; 
+ String ww1;
 
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
- const char* ssid = "HUAWEI-kccl";// 
-const char* password = "9847452948";
+ const char* ssid = "Miwifi";// 
+const char* password = "jeevan@10";
 //WiFiClient client;
-char server[] = "192.168.18.222"; 
+char server[] = "192.168.31.216"; 
 
 
 WiFiClient client;  
-void Sending_to_phpadmindatabase()
+
+void Sending_to_phpadmindatabase(String weight)
 {
   if (client.connect(server,80))
   {
@@ -343,16 +346,16 @@ void loop() {
   // get smoothed value from the dataset:
   if (newDataReady) {
     if (millis() > t + serialPrintInterval) {
-       weight = LoadCell.getData();
+       w1 = LoadCell.getData();
       Serial.print("Load_cell output val: ");
-      if(weight<0)
+      if(w1<0)
       {
-        weight=0;
+        w1=0;
         // Serial.println(weight);
       }
       else{
      
-        weight=weight*100;
+        w1=w1*100;
       }
       newDataReady = 0;
       t = millis();
@@ -369,5 +372,12 @@ void loop() {
   if (LoadCell.getTareStatus() == true) {
     Serial.println("Tare complete");
   }
-  Sending_to_phpadmindatabase();
+  
+  ws1=String(w1);
+  Serial.print(ws1);
+  ww1=ws1+"1";
+  
+
+  Sending_to_phpadmindatabase(ww1);
+  delay(2000);
 }
