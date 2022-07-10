@@ -3,10 +3,10 @@
 
 <?php
 
-$dbname = 'project_test';
+$dbname = 'medpharma';
 $dbuser = 'root';  
 $dbpass = ''; 
-$dbhost = 'localhost'; 
+$dbhost = '192.168.18.178:3306'; 
 
 $connect = @mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
 
@@ -17,18 +17,21 @@ if(!$connect){
 
 echo "Connection Success!<br><br>";
 
-$weight = $_GET["weight"];
+$wt= $_GET["weight"];
+$weight=sprintf("%.2f",$wt);
 $timestamp = time();
-$time=date("F d, Y h:i:s A", $timestamp);
+$date=date_default_timezone_set('Asia/Kolkata');
+$time=date("y-m-d h:i:s A");
+echo $time;
 
-$q0 = mysqli_query($connect,"SELECT * FROM weighttest WHERE id = 1");
+$q0 = mysqli_query($connect,"SELECT * FROM api_medicinebase WHERE m_id = 1");
 if (mysqli_num_rows($q0) == 0)
 {
-    $q1 = mysqli_query($connect,"INSERT INTO weighttest(id,weight,created,updated) VALUES(1,'$weight','$time','$time')");
+    $q1 = mysqli_query($connect,"INSERT INTO api_medicinebase(m_id,medicine_weight,created_at,updated_at) VALUES (1,'$weight','$time','$time')");
 }
  else
  {
-    $q2 = mysqli_query($connect,"UPDATE weighttest SET weight='$weight',updated ='$time' WHERE id = 1");
+    $q2 = mysqli_query($connect,"UPDATE api_medicinebase SET medicine_weight='$weight',updated_at='$time' WHERE m_id = 1");
  }
 
 
