@@ -3,10 +3,10 @@
 
 <?php
 
-$dbname = 'project_test';
+$dbname = 'medpharma';
 $dbuser = 'root';  
 $dbpass = ''; 
-$dbhost = 'localhost'; 
+$dbhost = '192.168.38.252:3306'; 
 
 $connect = @mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
 
@@ -30,14 +30,14 @@ $time=date("y-m-d h:i:s A");
 echo $time;
 echo $date;
 
-$q0 = mysqli_query($connect,"SELECT * FROM weighttest WHERE id = $key");
+$q0 = mysqli_query($connect,"SELECT * FROM api_medicinebase WHERE m_id = $key");
 if (mysqli_num_rows($q0) == 0)
 {
-    $q1 = mysqli_query($connect,"INSERT INTO weighttest(id,weight,created,updated) VALUES ($key,'$weight','$time','$time')");
+    $q1 = mysqli_query($connect,"INSERT INTO api_medicinebase(m_id,medicine_weight,created_at,updated_at) VALUES ($key,'$weight','$time','$time')");
 }
  else
  {
-    $q2 = mysqli_query($connect,"UPDATE weighttest SET weight='$weight',updated='$time' WHERE id = $key");
+    $q2 = mysqli_query($connect,"UPDATE api_medicinebase SET medicine_weight='$weight',updated_at='$time' WHERE m_id = $key");
  }
 
 
