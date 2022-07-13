@@ -237,10 +237,10 @@ float w1;
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
- const char* ssid = "Miwifi";// 
-const char* password = "jeevan@10";
+ const char* ssid = "Galaxy M310767";// 
+const char* password = "ard10000";
 //WiFiClient client;
-char server[] = "192.168.31.216"; 
+char server[] = "192.168.38.38"; 
 
 
 WiFiClient client;  
@@ -260,7 +260,7 @@ void Sending_to_phpadmindatabase(String weight)
      client.print(" ");      //SPACE BEFORE HTTP/1.1
     client.print("HTTP/1.1");
     client.println();
-    client.println("Host: 192.168.1.7");
+    client.println("Host: 192.168.38.38");
     client.println("Connection: close");
     client.println();
     //  client.print(String("GET http://your_hostname/testcase/testcase.php?") + 
@@ -374,9 +374,7 @@ void loop() {
   }
   
   ws1=String(w1);
-  Serial.print(ws1);
   ww1=ws1+"1";
-  
 
   Sending_to_phpadmindatabase(ww1);
   delay(2000);
