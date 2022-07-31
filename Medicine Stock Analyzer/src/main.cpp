@@ -237,10 +237,10 @@ float w1;
 const int calVal_eepromAdress = 0;
 unsigned long t = 0;
 
- const char* ssid = "Galaxy M310767";// 
+ const char* ssid = "Galaxy M310767";
 const char* password = "ard10000";
 //WiFiClient client;
-char server[] = "192.168.38.38"; 
+char server[] ="192.168.38.38"; 
 
 
 WiFiClient client;  
@@ -263,11 +263,7 @@ void Sending_to_phpadmindatabase(String weight)
     client.println("Host: 192.168.38.38");
     client.println("Connection: close");
     client.println();
-    //  client.print(String("GET http://your_hostname/testcase/testcase.php?") + 
-    //                       ("&weihumidity=") + humidity +
-    //                       " HTTP/1.1\r\n" +
-    //              "Host: " + host + "\r\n" +
-    //              "Connection: close\r\n\r\n");
+
   } else 
   {
     // if you didn't get a connection to the server:
@@ -303,11 +299,7 @@ void setup() {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     Serial.println("Startup is complete");
   }
-//  Serial.println("Initialiazing OLED Display....");
-//  display.init();
 
-//  display.flipScreenVertically();
-//  display.setFont(ArialMT_Plain_10);
 Serial.println();
 Serial.println();
 
@@ -333,10 +325,7 @@ Serial.println("Connecting..");
 }
 
 void loop() {
-  //display.clear();
-  // display.setTextAlignment(TEXT_ALIGN_LEFT);
-  // display.drawString(0,10,"Jeevan");
-  // display.display();
+
   static boolean newDataReady = 0;
   const int serialPrintInterval = 50; //increase value to slow down serial print activity
 
@@ -355,7 +344,7 @@ void loop() {
       }
       else{
      
-        w1=w1*100;
+        w1=w1*1000;
       }
       newDataReady = 0;
       t = millis();
@@ -375,7 +364,9 @@ void loop() {
   
   ws1=String(w1);
   ww1=ws1+"1";
+  Serial.println(ww1);
 
   Sending_to_phpadmindatabase(ww1);
-  delay(2000);
+  
+  
 }
